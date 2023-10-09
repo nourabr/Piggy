@@ -1,0 +1,82 @@
+[gd_scene load_steps=8 format=3 uid="uid://d1ppwwgcwnu1c"]
+
+[ext_resource type="Script" path="res://piggy.gd" id="1_4llna"]
+[ext_resource type="Texture2D" uid="uid://b61caa7a011yl" path="res://pig.png" id="1_bfyc6"]
+
+[sub_resource type="Animation" id="Animation_nomar"]
+resource_name = "Idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_tonvr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_lry2v"]
+resource_name = "Running"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [1, 2, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qr6ja"]
+_data = {
+"Idle": SubResource("Animation_nomar"),
+"RESET": SubResource("Animation_tonvr"),
+"Running": SubResource("Animation_lry2v")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y1umr"]
+radius = 6.0
+height = 20.0
+
+[node name="Piggy" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_4llna")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_bfyc6")
+hframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qr6ja")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_y1umr")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
